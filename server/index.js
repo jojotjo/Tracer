@@ -1,14 +1,12 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-
 const UserModel = require("./models/Users");
-
 const app = express();
 app.use(express.json());
 app.use(cors());
 
-mongoose.connect("mongodb://127.0.0.1:2701/Tracer");
+mongoose.connect("mongodb://127.0.0.1:27017/Tracer");
 
 app.post("/register", (req, res) => {
   UserModel.create(req.body)
@@ -21,16 +19,18 @@ app.post("/login", (req, res) => {
   UserModel.findOne({ email: email }).then((user) => {
     if (user) {
       if (user.password === password) {
-        res.json("Login Successfull!");
+        res.json("Login successful!");
       } else {
-        res.json("The Password is Incorrect");
+        res.json("The password is incorrect");
       }
     } else {
-      res.json("No Record Existed.");
+      res.json("no record existed");
     }
   });
 });
 
+
+
 app.listen(5000, () => {
-  console.log("Server is Running...");
+  console.log("server is running");
 });
