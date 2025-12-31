@@ -1,41 +1,10 @@
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React from 'react'
 
-const Navbar = ({ user, setUser }) => {
-  const handleLogout = () => {
-    setUser(null);
-    localStorage.removeItem("token");
-  };
-
+export default function Navbar() {
   return (
-    <nav className="flex justify-between p-4 bg-gray-800 text-white">
-      <Link to="/" className="font-bold text-lg">
-        MyApp
-      </Link>
-
-      <div>
-        {!user ? (
-          <>
-            <Link to="/login" className="mx-2">
-              Login
-            </Link>
-            <Link to="/signup" className="mx-2">
-              Sign Up
-            </Link>
-          </>
-        ) : (
-          <>
-            <Link to="/profile" className="mx-2">
-              Profile
-            </Link>
-            <button onClick={handleLogout} className="mx-2">
-              Logout
-            </button>
-          </>
-        )}
-      </div>
+     <nav className="bg-blue-600 text-white p-4 flex justify-between">
+      <h1 className="text-xl font-bold">Expense Tracer</h1>
+      <button className="bg-white text-blue-600 px-4 py-1 rounded">Logout</button>
     </nav>
-  );
-};
-
-export default Navbar;
+  )
+}

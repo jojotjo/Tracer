@@ -1,29 +1,43 @@
-import { Navigate, Route, Routes } from 'react-router-dom';
-import './App.css';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
-import Home from './pages/Home';
-import { useState } from 'react';
-import RefrshHandler from './RefrshHandler';
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import Navbar from "./components/Navbar";
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
+import Signup from "./pages/Signup";
 
+// Protected route wrapper
+const ProtectedRoute = ({ children }) => {
+  const token = localStorage.getItem("token");
+  if (!token) return <Navigate to="/login" />;
+  return children;
+};
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  const PrivateRoute = ({ element }) => {
-    return isAuthenticated ? element : <Navigate to="/login" />
-  }
-
   return (
-    <div className="App">
-      <RefrshHandler setIsAuthenticated={setIsAuthenticated} />
-      <Routes>
-        <Route path='/' element={<Navigate to="/login" />} />
-        <Route path='/login' element={<Login />} />
-        <Route path='/signup' element={<Signup />} />
-        <Route path='/home' element={<PrivateRoute element={<Home />} />} />
-      </Routes>
-    </div>
+    <Router>
+      <div className="min-h-screen bg-gray-100">
+        <Navbar />
+        <div className="container mx-auto p-4">
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+          </Routes>
+        </div>
+      </div>
+    </Router>
   );
 }
 
