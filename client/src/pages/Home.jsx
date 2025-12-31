@@ -1,32 +1,61 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
+import { handleError, handleSuccess } from '../utils';
+import { ToastContainer } from 'react-toastify';
 
-const Home = () => {
-  const navigate = useNavigate();
+function Home() {
+    const [loggedInUser, setLoggedInUser] = useState('');
+    const [products, setProducts] = useState('');
+    const navigate = useNavigate();
+    useEffect(() => {
+        setLoggedInUser(localStorage.getItem('loggedInUser'))
+    }, [])
 
-  const handleLogout = () => {
-    navigate("/login");
-  };
+    const handleLogout = (e) => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('loggedInUser');
+        handleSuccess('User Loggedout');
+        setTimeout(() => {
+            navigate('/login');
+        }, 1000)
+    }
 
-  return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 px-4">
-      <div className="bg-white shadow-lg rounded-2xl p-8 text-center max-w-md w-full">
-        <h2 className="text-2xl font-semibold text-blue-600 mb-3">
-          Welcome to the Home Page
-        </h2>
-        <p className="text-gray-600 mb-6">
-          You have successfully logged in! 🎉
-        </p>
+    const fetchProducts = async () => {
+        try {
+            const url = "/products";
+            const headers = {
+                headers: {
+                    'Authorization': localStorage.getItem('token')
+                }
+            }
+            const response = await fetch(url, headers);
+            const result = await response.json();
+            console.log(result);
+            setProducts(result);
+        } catch (err) {
+            handleError(err);
+        }
+    }
+    useEffect(() => {
+        fetchProducts()
+    }, [])
 
-        <button
-          onClick={handleLogout}
-          className="bg-red-500 text-white font-medium py-2 px-6 rounded-lg hover:bg-red-600 transition duration-200 w-full"
-        >
-          Logout
-        </button>
-      </div>
-    </div>
-  );
-};
+    return (
+        <div>
+            <h1>Welcome {loggedInUser}</h1>
+            <button onClick={handleLogout}>Logout</button>
+            <div>
+                {
+                    products && products?.map((item, index) => (
+                        <ul key={index}>
+                            <span>{item.name} : {item.price}</span>
+                        </ul>
+                    ))
+                }
+            </div>
+            <ToastContainer />
+        </div>
+    )
+}
 
-export default Home;
+export default Home

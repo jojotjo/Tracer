@@ -1,109 +1,93 @@
-import { useState } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify';
+import { handleError, handleSuccess } from '../utils';
 
-const Login = () => {
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-  const [message, setMessage] = useState("");
-  const navigate = useNavigate();
+function Login() {
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+    const [loginInfo, setLoginInfo] = useState({
+        email: '',
+        password: ''
+    })
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await axios.post("http://localhost:5000/login", formData);
-      setMessage(res.data.message || "Login successful!");
-      setFormData({ email: "", password: "" });
+    const navigate = useNavigate();
 
-      setTimeout(() => {
-        navigate("/");
-      }, 1000);
-    } catch (err) {
-      setMessage(err.response?.data?.message || "Invalid credentials");
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        console.log(name, value);
+        const copyLoginInfo = { ...loginInfo };
+        copyLoginInfo[name] = value;
+        setLoginInfo(copyLoginInfo);
     }
-  };
 
-  return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50 px-4">
-      <div className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-sm">
-        <h3 className="text-2xl font-semibold text-center text-blue-600 mb-6">
-          Login to Your Account
-        </h3>
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        const { email, password } = loginInfo;
+        if (!email || !password) {
+            return handleError('email and password are required')
+        }
+        try {
+            const url = `/auth/login`;
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(loginInfo)
+            });
+            const result = await response.json();
+            const { success, message, jwtToken, name, error } = result;
+            if (success) {
+                handleSuccess(message);
+                localStorage.setItem('token', jwtToken);
+                localStorage.setItem('loggedInUser', name);
+                setTimeout(() => {
+                    navigate('/home')
+                }, 1000)
+            } else if (error) {
+                const details = error?.details[0].message;
+                handleError(details);
+            } else if (!success) {
+                handleError(message);
+            }
+            console.log(result);
+        } catch (err) {
+            handleError(err);
+        }
+    }
 
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <div>
-            <label
-              htmlFor="email"
-              className="block text-gray-700 font-medium mb-2"
-            >
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-              placeholder="Enter your email"
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="password"
-              className="block text-gray-700 font-medium mb-2"
-            >
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-              placeholder="Enter your password"
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-lg font-medium hover:bg-blue-700 transition duration-200"
-          >
-            Login
-          </button>
-        </form>
-
-        <div className="text-center mt-4 text-gray-600">
-          <p>
-            Don’t have an account?{" "}
-            <button
-              type="button"
-              onClick={() => navigate("/register")}
-              className="text-blue-600 hover:underline font-medium"
-            >
-              Sign Up
-            </button>
-          </p>
+    return (
+        <div className='container'>
+            <h1>Login</h1>
+            <form onSubmit={handleLogin}>
+                <div>
+                    <label htmlFor='email'>Email</label>
+                    <input
+                        onChange={handleChange}
+                        type='email'
+                        name='email'
+                        placeholder='Enter your email...'
+                        value={loginInfo.email}
+                    />
+                </div>
+                <div>
+                    <label htmlFor='password'>Password</label>
+                    <input
+                        onChange={handleChange}
+                        type='password'
+                        name='password'
+                        placeholder='Enter your password...'
+                        value={loginInfo.password}
+                    />
+                </div>
+                <button type='submit'>Login</button>
+                <span>Does't have an account ?
+                    <Link to="/signup">Signup</Link>
+                </span>
+            </form>
+            <ToastContainer />
         </div>
+    )
+}
 
-        {message && (
-          <div className="mt-4 text-center text-sm font-medium text-blue-700 bg-blue-100 py-2 px-4 rounded-lg">
-            {message}
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};
-
-export default Login;
+export default Login
