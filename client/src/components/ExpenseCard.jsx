@@ -6,6 +6,11 @@ export default function ExpenseCard({ expense, onDelete }) {
       <div>
         <h3 className="font-semibold">{expense.title}</h3>
         <p className="text-gray-500 text-sm">{expense.category}</p>
+
+        {/* Date */}
+        <p className="text-xs text-gray-400">
+          {new Date(expense.createdAt).toLocaleDateString()}
+        </p>
       </div>
 
       <div className="flex items-center gap-4">

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import { loginUser } from "../services/authService";
 
 export default function Login() {
@@ -8,6 +8,9 @@ export default function Login() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  const token = localStorage.getItem("token");
+  if (token) return <Navigate to="/" replace />;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -15,10 +18,7 @@ export default function Login() {
     try {
       const res = await loginUser({ email, password });
 
-      // Save token
       localStorage.setItem("token", res.data.token);
-
-      // Redirect to dashboard
       navigate("/");
     } catch (err) {
       setError(err.response?.data?.message || "Login failed");
