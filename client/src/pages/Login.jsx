@@ -1,66 +1,207 @@
 import { useState } from "react";
-import { useNavigate, Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { loginUser } from "../services/authService";
+import { useAuth } from "../context/AuthContext";
+import { Wallet, Mail, Lock, ArrowRight, Eye, EyeOff } from "lucide-react";
+import { toast } from "react-toastify";
 
 export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const { login, isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
-  const token = localStorage.getItem("token");
-  if (token) return <Navigate to="/" replace />;
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
+  // Already logged in → redirect
+  if (isAuthenticated) return <Navigate to="/dashboard" replace />;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
+    setLoading(true);
 
     try {
       const res = await loginUser({ email, password });
-
-      localStorage.setItem("token", res.data.token);
-      navigate("/");
+      login(res.data.token);
+      toast.success("Login successful!");
+      navigate("/dashboard", { replace: true });
     } catch (err) {
-      setError(err.response?.data?.message || "Login failed");
+      const errorMessage = err.response?.data?.message || "Login failed";
+      toast.error(errorMessage);
+      console.error("Login error:", err);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white p-6 rounded shadow-md w-96"
-      >
-        <h2 className="text-2xl font-bold mb-4 text-center">Login</h2>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white overflow-hidden flex items-center justify-center px-6 relative">
+      {/* Animated background elements */}
+      <div className="absolute top-20 left-10 w-72 h-72 bg-purple-500/20 rounded-full blur-3xl animate-pulse"></div>
+      <div className="absolute bottom-20 right-10 w-72 h-72 bg-pink-500/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
 
-        {error && (
-          <p className="bg-red-100 text-red-700 p-2 mb-3 rounded">
-            {error}
+      <div className="relative z-10 w-full max-w-md">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <div 
+            className="flex items-center justify-center gap-2 mb-6 cursor-pointer group"
+            onClick={() => navigate("/")}
+          >
+            <div className="p-3 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg group-hover:shadow-lg group-hover:shadow-purple-500/50 transition-all duration-200">
+              <Wallet className="text-white" size={32} />
+            </div>
+            <span className="text-3xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-purple-400 bg-clip-text text-transparent group-hover:from-purple-300 group-hover:to-pink-300 transition-all">
+              Tracer
+            </span>
+          </div>
+          
+          <h1 className="text-4xl font-bold mb-2">Welcome Back</h1>
+          <p className="text-gray-400">Sign in to your account to continue</p>
+        </div>
+
+        {/* Login Form */}
+        <form
+          onSubmit={handleSubmit}
+          className="bg-gradient-to-br from-slate-800/50 to-purple-900/30 backdrop-blur-md border border-purple-500/20 rounded-2xl p-8 space-y-6"
+        >
+          {/* Email Input */}
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-gray-300">
+              Email Address
+            </label>
+            <div className="relative">
+              <Mail className="absolute left-4 top-3.5 text-purple-400" size={20} />
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@example.com"
+                className="w-full pl-12 pr-4 py-3 bg-slate-700/50 border border-purple-500/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all duration-200"
+                required
+              />
+            </div>
+          </div>
+
+          {/* Password Input */}
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-gray-300">
+              Password
+            </label>
+            <div className="relative">
+              <Lock className="absolute left-4 top-3.5 text-purple-400" size={20} />
+              <input
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                className="w-full pl-12 pr-12 py-3 bg-slate-700/50 border border-purple-500/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all duration-200"
+                required
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-3.5 text-purple-400 hover:text-purple-300 transition"
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
+          </div>
+
+          {/* Remember Me & Forgot Password */}
+          <div className="flex items-center justify-between text-sm">
+            <label className="flex items-center gap-2 cursor-pointer text-gray-400 hover:text-gray-300 transition">
+              <input type="checkbox" className="rounded border-purple-500/30" />
+              Remember me
+            </label>
+            <a href="#" className="text-purple-400 hover:text-purple-300 transition">
+              Forgot password?
+            </a>
+          </div>
+
+          {/* Login Button */}
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-lg hover:shadow-lg hover:shadow-purple-500/50 transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center justify-center gap-2"
+          >
+            {loading ? (
+              <>
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                Signing in...
+              </>
+            ) : (
+              <>
+                Sign In
+                <ArrowRight size={20} />
+              </>
+            )}
+          </button>
+
+          {/* Divider */}
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-purple-500/20"></div>
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="px-2 bg-gradient-to-br from-slate-800/50 to-purple-900/30 text-gray-400">
+                Or continue with
+              </span>
+            </div>
+          </div>
+
+          {/* Social Login Buttons */}
+          <div className="grid grid-cols-2 gap-3">
+            <button
+              type="button"
+              className="py-2 px-4 bg-slate-700/50 border border-purple-500/20 rounded-lg text-sm font-medium text-gray-300 hover:bg-slate-700/80 hover:border-purple-500/40 transition-all"
+            >
+              Google
+            </button>
+            <button
+              type="button"
+              className="py-2 px-4 bg-slate-700/50 border border-purple-500/20 rounded-lg text-sm font-medium text-gray-300 hover:bg-slate-700/80 hover:border-purple-500/40 transition-all"
+            >
+              GitHub
+            </button>
+          </div>
+        </form>
+
+        {/* Sign Up Link */}
+        <div className="mt-6 text-center">
+          <p className="text-gray-400">
+            Don't have an account?{" "}
+            <button
+              onClick={() => navigate("/signup")}
+              className="text-purple-400 hover:text-purple-300 font-semibold transition"
+            >
+              Sign up here
+            </button>
           </p>
-        )}
+        </div>
 
-        <input
-          type="email"
-          placeholder="Email"
-          className="w-full mb-3 px-3 py-2 border rounded"
-          required
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-
-        <input
-          type="password"
-          placeholder="Password"
-          className="w-full mb-4 px-3 py-2 border rounded"
-          required
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-
-        <button className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
-          Login
-        </button>
-      </form>
+        {/* Features Preview */}
+        <div className="mt-12 grid grid-cols-3 gap-4">
+          <div className="text-center">
+            <div className="w-10 h-10 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-lg flex items-center justify-center mx-auto mb-2 border border-purple-500/30">
+              <Wallet size={20} className="text-purple-400" />
+            </div>
+            <p className="text-xs text-gray-400">Track Expenses</p>
+          </div>
+          <div className="text-center">
+            <div className="w-10 h-10 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-lg flex items-center justify-center mx-auto mb-2 border border-purple-500/30">
+              <ArrowRight size={20} className="text-purple-400" />
+            </div>
+            <p className="text-xs text-gray-400">Smart Analytics</p>
+          </div>
+          <div className="text-center">
+            <div className="w-10 h-10 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-lg flex items-center justify-center mx-auto mb-2 border border-purple-500/30">
+              <Lock size={20} className="text-purple-400" />
+            </div>
+            <p className="text-xs text-gray-400">100% Secure</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

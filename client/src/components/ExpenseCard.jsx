@@ -1,8 +1,8 @@
-import React from 'react'
+import React from "react";
 
-export default function ExpenseCard({ expense, onDelete }) {
+export default function ExpenseCard({ expense, onDelete, onEdit }) {
   return (
-    <div className="flex justify-between items-center bg-white shadow p-4 rounded">
+    <div className="flex justify-between items-center bg-white dark:bg-gray-700 shadow rounded">
       <div>
         <h3 className="font-semibold">{expense.title}</h3>
         <p className="text-gray-500 text-sm">{expense.category}</p>
@@ -20,6 +20,12 @@ export default function ExpenseCard({ expense, onDelete }) {
           className="text-sm text-white bg-red-500 px-3 py-1 rounded hover:bg-red-600"
         >
           Delete
+        </button>
+        <button
+          onClick={() => onEdit(expense)}
+          className="text-sm text-white bg-blue-500 px-3 py-1 rounded hover:bg-blue-600"
+        >
+          Edit
         </button>
       </div>
     </div>

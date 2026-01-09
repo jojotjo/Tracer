@@ -31,20 +31,29 @@ exports.getExpenses = async (req, res) => {
 };
 
 exports.updateExpense = async (req, res) => {
-  try {
-    const expense = await Expense.findOneAndUpdate(
-      {
-        _id: req.params.id,
-        userId: req.user._id,
-      },
-      req.body,
-      { new: true }
-    );
+  const { amount, category, date, note, paymentMode } = req.body;
 
-    if (!expense) return res.status(404).json({ message: "Expense not found" });
-    res.json(expense);
+  try {
+    const expense = await Expense.findOne({
+      _id: req.params.id,
+      userId: req.user._id,  // FIXED: was "user" instead of "userId"
+    });
+
+    if (!expense) {
+      return res.status(404).json({ message: "Expense not found" });
+    }
+
+    // FIXED: Updated field names to match the schema
+    expense.amount = amount ?? expense.amount;
+    expense.category = category ?? expense.category;
+    expense.date = date ?? expense.date;
+    expense.note = note ?? expense.note;
+    expense.paymentMode = paymentMode ?? expense.paymentMode;
+
+    const updatedExpense = await expense.save();
+    res.json(updatedExpense);
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.status(500).json({ message: "Update failed" });
   }
 };
 
