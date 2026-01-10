@@ -3,6 +3,7 @@ import { addExpense } from "../services/expenseService";
 import { toast } from "react-toastify";
 import { DollarSign, Tag, Calendar, FileText, CreditCard, Plus, ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 export default function AddExpense() {
   const [amount, setAmount] = useState("");
@@ -12,6 +13,7 @@ export default function AddExpense() {
   const [paymentMode, setPaymentMode] = useState("Cash");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { darkMode } = useAuth();
 
   const categories = ["Food", "Transport", "Entertainment", "Shopping", "Bills", "Health", "Education", "Other"];
   const paymentModes = ["Cash", "Card", "UPI"];
@@ -48,38 +50,38 @@ export default function AddExpense() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white pt-20 px-6">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-white dark:from-slate-900 dark:via-purple-900 dark:to-slate-900 text-slate-900 dark:text-white pt-20 px-6 transition-colors duration-300">
       {/* Animated background elements */}
-      <div className="fixed top-20 left-10 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl -z-10"></div>
-      <div className="fixed bottom-20 right-10 w-72 h-72 bg-pink-500/10 rounded-full blur-3xl -z-10"></div>
+      <div className="fixed top-20 left-10 w-72 h-72 bg-purple-200/50 dark:bg-purple-500/10 rounded-full blur-3xl -z-10 transition-colors duration-300"></div>
+      <div className="fixed bottom-20 right-10 w-72 h-72 bg-pink-200/50 dark:bg-pink-500/10 rounded-full blur-3xl -z-10 transition-colors duration-300"></div>
 
       <div className="max-w-2xl mx-auto">
         {/* Header */}
         <div className="mb-12">
           <button
             onClick={() => navigate("/expenses")}
-            className="flex items-center gap-2 text-purple-400 hover:text-purple-300 transition mb-6"
+            className="flex items-center gap-2 text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 transition mb-6"
           >
             <ArrowLeft size={20} />
             Back to Expenses
           </button>
           
           <h1 className="text-5xl font-bold mb-2">Add Expense</h1>
-          <p className="text-gray-400">Track your spending with detailed information</p>
+          <p className="text-gray-600 dark:text-gray-400">Track your spending with detailed information</p>
         </div>
 
         {/* Form Card */}
         <form
           onSubmit={handleSubmit}
-          className="bg-gradient-to-br from-slate-800/50 to-purple-900/30 backdrop-blur-md border border-purple-500/20 rounded-2xl p-8 space-y-6"
+          className="bg-gradient-to-br from-white to-gray-50 dark:from-slate-800/50 dark:to-purple-900/30 backdrop-blur-md border border-gray-300 dark:border-purple-500/20 rounded-2xl p-8 space-y-6"
         >
           {/* Amount Input */}
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-300">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
               Amount *
             </label>
             <div className="relative">
-              <DollarSign className="absolute left-4 top-3.5 text-purple-400" size={20} />
+              <DollarSign className="absolute left-4 top-3.5 text-purple-600 dark:text-purple-400" size={20} />
               <input
                 type="number"
                 placeholder="0.00"
@@ -87,7 +89,7 @@ export default function AddExpense() {
                 min="0"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 bg-slate-700/50 border border-purple-500/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all duration-200"
+                className="w-full pl-12 pr-4 py-3 bg-white dark:bg-slate-700/50 border border-gray-300 dark:border-purple-500/30 rounded-lg text-slate-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all duration-200"
                 required
               />
             </div>
@@ -95,24 +97,24 @@ export default function AddExpense() {
 
           {/* Category Select */}
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-300">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
               Category *
             </label>
             <div className="relative">
-              <Tag className="absolute left-4 top-3.5 text-purple-400" size={20} />
+              <Tag className="absolute left-4 top-3.5 text-purple-600 dark:text-purple-400" size={20} />
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 bg-slate-700/50 border border-purple-500/30 rounded-lg text-white focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all duration-200 appearance-none"
+                className="w-full pl-12 pr-4 py-3 bg-white dark:bg-slate-700/50 border border-gray-300 dark:border-purple-500/30 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all duration-200 appearance-none"
                 required
               >
                 {categories.map((cat) => (
-                  <option key={cat} value={cat} className="bg-slate-900">
+                  <option key={cat} value={cat} className="bg-white dark:bg-slate-900">
                     {cat}
                   </option>
                 ))}
               </select>
-              <div className="absolute right-4 top-3.5 pointer-events-none text-gray-400">
+              <div className="absolute right-4 top-3.5 pointer-events-none text-gray-600 dark:text-gray-400">
                 ▼
               </div>
             </div>
@@ -120,16 +122,16 @@ export default function AddExpense() {
 
           {/* Date Input */}
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-300">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
               Date *
             </label>
             <div className="relative">
-              <Calendar className="absolute left-4 top-3.5 text-purple-400" size={20} />
+              <Calendar className="absolute left-4 top-3.5 text-purple-600 dark:text-purple-400" size={20} />
               <input
                 type="date"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 bg-slate-700/50 border border-purple-500/30 rounded-lg text-white focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all duration-200"
+                className="w-full pl-12 pr-4 py-3 bg-white dark:bg-slate-700/50 border border-gray-300 dark:border-purple-500/30 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all duration-200"
                 required
               />
             </div>
@@ -137,24 +139,24 @@ export default function AddExpense() {
 
           {/* Payment Mode */}
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-300">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
               Payment Mode *
             </label>
             <div className="relative">
-              <CreditCard className="absolute left-4 top-3.5 text-purple-400" size={20} />
+              <CreditCard className="absolute left-4 top-3.5 text-purple-600 dark:text-purple-400" size={20} />
               <select
                 value={paymentMode}
                 onChange={(e) => setPaymentMode(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 bg-slate-700/50 border border-purple-500/30 rounded-lg text-white focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all duration-200 appearance-none"
+                className="w-full pl-12 pr-4 py-3 bg-white dark:bg-slate-700/50 border border-gray-300 dark:border-purple-500/30 rounded-lg text-slate-900 dark:text-white focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all duration-200 appearance-none"
                 required
               >
                 {paymentModes.map((mode) => (
-                  <option key={mode} value={mode} className="bg-slate-900">
+                  <option key={mode} value={mode} className="bg-white dark:bg-slate-900">
                     {mode}
                   </option>
                 ))}
               </select>
-              <div className="absolute right-4 top-3.5 pointer-events-none text-gray-400">
+              <div className="absolute right-4 top-3.5 pointer-events-none text-gray-600 dark:text-gray-400">
                 ▼
               </div>
             </div>
@@ -162,24 +164,24 @@ export default function AddExpense() {
 
           {/* Note Textarea */}
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-300">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
               Note (Optional)
             </label>
             <div className="relative">
-              <FileText className="absolute left-4 top-3.5 text-purple-400" size={20} />
+              <FileText className="absolute left-4 top-3.5 text-purple-600 dark:text-purple-400" size={20} />
               <textarea
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
                 placeholder="Add any additional notes about this expense..."
-                className="w-full pl-12 pr-4 py-3 bg-slate-700/50 border border-purple-500/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all duration-200 resize-none"
+                className="w-full pl-12 pr-4 py-3 bg-white dark:bg-slate-700/50 border border-gray-300 dark:border-purple-500/30 rounded-lg text-slate-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all duration-200 resize-none"
                 rows="3"
               />
             </div>
           </div>
 
           {/* Info Box */}
-          <div className="bg-purple-500/10 border border-purple-500/30 rounded-lg p-4">
-            <p className="text-sm text-purple-300">
+          <div className="bg-purple-100 dark:bg-purple-500/10 border border-purple-300 dark:border-purple-500/30 rounded-lg p-4">
+            <p className="text-sm text-purple-700 dark:text-purple-300">
               💡 <span className="font-medium">Tip:</span> Make sure all required fields (marked with *) are filled before submitting.
             </p>
           </div>
@@ -189,7 +191,7 @@ export default function AddExpense() {
             <button
               type="button"
               onClick={() => navigate("/expenses")}
-              className="px-6 py-3 border-2 border-purple-500/30 text-purple-300 rounded-lg font-semibold hover:bg-purple-500/10 transition-all duration-200"
+              className="px-6 py-3 border-2 border-purple-500/30 dark:border-purple-500/30 text-purple-600 dark:text-purple-300 rounded-lg font-semibold hover:bg-purple-50 dark:hover:bg-purple-500/10 transition-all duration-200"
             >
               Cancel
             </button>
@@ -215,14 +217,14 @@ export default function AddExpense() {
 
         {/* Quick Stats */}
         <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="bg-gradient-to-br from-slate-800/50 to-purple-900/30 backdrop-blur-md border border-purple-500/20 rounded-xl p-6">
-            <p className="text-gray-400 text-sm mb-2">Common Categories</p>
+          <div className="bg-gradient-to-br from-white to-gray-50 dark:from-slate-800/50 dark:to-purple-900/30 backdrop-blur-md border border-gray-300 dark:border-purple-500/20 rounded-xl p-6">
+            <p className="text-gray-600 dark:text-gray-400 text-sm mb-2">Common Categories</p>
             <div className="flex flex-wrap gap-2">
               {categories.slice(0, 4).map((cat) => (
                 <button
                   key={cat}
                   onClick={() => setCategory(cat)}
-                  className="px-3 py-1 text-xs bg-purple-500/20 hover:bg-purple-500/40 text-purple-300 rounded-full transition-all"
+                  className="px-3 py-1 text-xs bg-purple-200 dark:bg-purple-500/20 hover:bg-purple-300 dark:hover:bg-purple-500/40 text-purple-700 dark:text-purple-300 rounded-full transition-all"
                 >
                   {cat}
                 </button>
@@ -230,14 +232,14 @@ export default function AddExpense() {
             </div>
           </div>
 
-          <div className="bg-gradient-to-br from-slate-800/50 to-purple-900/30 backdrop-blur-md border border-purple-500/20 rounded-xl p-6">
-            <p className="text-gray-400 text-sm mb-2">Payment Methods</p>
+          <div className="bg-gradient-to-br from-white to-gray-50 dark:from-slate-800/50 dark:to-purple-900/30 backdrop-blur-md border border-gray-300 dark:border-purple-500/20 rounded-xl p-6">
+            <p className="text-gray-600 dark:text-gray-400 text-sm mb-2">Payment Methods</p>
             <div className="flex gap-2">
               {paymentModes.map((mode) => (
                 <button
                   key={mode}
                   onClick={() => setPaymentMode(mode)}
-                  className="flex-1 px-3 py-1 text-xs bg-purple-500/20 hover:bg-purple-500/40 text-purple-300 rounded-full transition-all"
+                  className="flex-1 px-3 py-1 text-xs bg-purple-200 dark:bg-purple-500/20 hover:bg-purple-300 dark:hover:bg-purple-500/40 text-purple-700 dark:text-purple-300 rounded-full transition-all"
                 >
                   {mode}
                 </button>
@@ -245,9 +247,9 @@ export default function AddExpense() {
             </div>
           </div>
 
-          <div className="bg-gradient-to-br from-slate-800/50 to-purple-900/30 backdrop-blur-md border border-purple-500/20 rounded-xl p-6">
-            <p className="text-gray-400 text-sm mb-2">Today's Date</p>
-            <p className="text-lg font-semibold text-purple-300">
+          <div className="bg-gradient-to-br from-white to-gray-50 dark:from-slate-800/50 dark:to-purple-900/30 backdrop-blur-md border border-gray-300 dark:border-purple-500/20 rounded-xl p-6">
+            <p className="text-gray-600 dark:text-gray-400 text-sm mb-2">Today's Date</p>
+            <p className="text-lg font-semibold text-purple-600 dark:text-purple-300">
               {new Date().toLocaleDateString("en-US", {
                 month: "short",
                 day: "numeric",
@@ -256,7 +258,7 @@ export default function AddExpense() {
             </p>
             <button
               onClick={() => setDate(new Date().toISOString().split("T")[0])}
-              className="mt-2 text-xs px-3 py-1 bg-purple-500/20 hover:bg-purple-500/40 text-purple-300 rounded transition-all"
+              className="mt-2 text-xs px-3 py-1 bg-purple-200 dark:bg-purple-500/20 hover:bg-purple-300 dark:hover:bg-purple-500/40 text-purple-700 dark:text-purple-300 rounded transition-all"
             >
               Use Today
             </button>

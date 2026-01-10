@@ -1,16 +1,23 @@
+// utils/theme.js
+
 export const getTheme = () => {
-  return localStorage.getItem("theme") || "light";
+  return localStorage.getItem("darkMode") === "true" ? "dark" : "light";
 };
 
 export const setTheme = (theme) => {
-  localStorage.setItem("theme", theme);
-  document.documentElement.classList.remove("light", "dark");
-  document.documentElement.classList.add(theme);
+  const isDark = theme === "dark";
+  localStorage.setItem("darkMode", isDark);
+
+  if (isDark) {
+    document.documentElement.classList.add("dark");
+  } else {
+    document.documentElement.classList.remove("dark");
+  }
 };
 
 export const toggleTheme = () => {
-  const current = getTheme();
-  const next = current === "dark" ? "light" : "dark";
-  setTheme(next);
-  return next;
+  const currentTheme = getTheme();
+  const newTheme = currentTheme === "dark" ? "light" : "dark";
+  setTheme(newTheme);
+  return newTheme;
 };

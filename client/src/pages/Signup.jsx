@@ -64,10 +64,10 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white overflow-hidden flex items-center justify-center px-6 relative py-12">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-white dark:from-slate-900 dark:via-purple-900 dark:to-slate-900 text-slate-900 dark:text-white overflow-hidden flex items-center justify-center px-6 relative py-12 transition-colors duration-300">
       {/* Animated background elements */}
-      <div className="absolute top-20 left-10 w-72 h-72 bg-purple-500/20 rounded-full blur-3xl animate-pulse"></div>
-      <div className="absolute bottom-20 right-10 w-72 h-72 bg-pink-500/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+      <div className="absolute top-20 left-10 w-72 h-72 bg-purple-200/50 dark:bg-purple-500/20 rounded-full blur-3xl animate-pulse transition-colors duration-300"></div>
+      <div className="absolute bottom-20 right-10 w-72 h-72 bg-pink-200/50 dark:bg-pink-500/20 rounded-full blur-3xl animate-pulse delay-1000 transition-colors duration-300"></div>
 
       <div className="relative z-10 w-full max-w-md">
         {/* Header */}
@@ -85,28 +85,28 @@ export default function Signup() {
           </div>
           
           <h1 className="text-4xl font-bold mb-2">Get Started</h1>
-          <p className="text-gray-400">Create your account in seconds</p>
+          <p className="text-gray-600 dark:text-gray-400">Create your account in seconds</p>
         </div>
 
         {/* Signup Form */}
         <form
           onSubmit={handleSubmit}
-          className="bg-gradient-to-br from-slate-800/50 to-purple-900/30 backdrop-blur-md border border-purple-500/20 rounded-2xl p-8 space-y-5"
+          className="bg-gradient-to-br from-white to-gray-50 dark:from-slate-800/50 dark:to-purple-900/30 backdrop-blur-md border border-gray-300 dark:border-purple-500/20 rounded-2xl p-8 space-y-5"
         >
           {/* Full Name Input */}
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-300">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
               Full Name
             </label>
             <div className="relative">
-              <User className="absolute left-4 top-3.5 text-purple-400" size={20} />
+              <User className="absolute left-4 top-3.5 text-purple-600 dark:text-purple-400" size={20} />
               <input
                 type="text"
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
                 placeholder="John Doe"
-                className="w-full pl-12 pr-4 py-3 bg-slate-700/50 border border-purple-500/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all duration-200"
+                className="w-full pl-12 pr-4 py-3 bg-white dark:bg-slate-700/50 border border-gray-300 dark:border-purple-500/30 rounded-lg text-slate-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all duration-200"
                 required
               />
             </div>
@@ -114,18 +114,18 @@ export default function Signup() {
 
           {/* Email Input */}
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-300">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
               Email Address
             </label>
             <div className="relative">
-              <Mail className="absolute left-4 top-3.5 text-purple-400" size={20} />
+              <Mail className="absolute left-4 top-3.5 text-purple-600 dark:text-purple-400" size={20} />
               <input
                 type="email"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="you@example.com"
-                className="w-full pl-12 pr-4 py-3 bg-slate-700/50 border border-purple-500/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all duration-200"
+                className="w-full pl-12 pr-4 py-3 bg-white dark:bg-slate-700/50 border border-gray-300 dark:border-purple-500/30 rounded-lg text-slate-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all duration-200"
                 required
               />
             </div>
@@ -133,51 +133,51 @@ export default function Signup() {
 
           {/* Password Input */}
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-300">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
               Password
             </label>
             <div className="relative">
-              <Lock className="absolute left-4 top-3.5 text-purple-400" size={20} />
+              <Lock className="absolute left-4 top-3.5 text-purple-600 dark:text-purple-400" size={20} />
               <input
                 type={showPassword ? "text" : "password"}
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
                 placeholder="••••••••"
-                className="w-full pl-12 pr-12 py-3 bg-slate-700/50 border border-purple-500/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all duration-200"
+                className="w-full pl-12 pr-12 py-3 bg-white dark:bg-slate-700/50 border border-gray-300 dark:border-purple-500/30 rounded-lg text-slate-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all duration-200"
                 required
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-4 top-3.5 text-purple-400 hover:text-purple-300 transition"
+                className="absolute right-4 top-3.5 text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 transition"
               >
                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </button>
             </div>
-            <p className="text-xs text-gray-500">At least 6 characters</p>
+            <p className="text-xs text-gray-600 dark:text-gray-500">At least 6 characters</p>
           </div>
 
           {/* Confirm Password Input */}
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-300">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
               Confirm Password
             </label>
             <div className="relative">
-              <Lock className="absolute left-4 top-3.5 text-purple-400" size={20} />
+              <Lock className="absolute left-4 top-3.5 text-purple-600 dark:text-purple-400" size={20} />
               <input
                 type={showConfirmPassword ? "text" : "password"}
                 name="confirmPassword"
                 value={formData.confirmPassword}
                 onChange={handleChange}
                 placeholder="••••••••"
-                className="w-full pl-12 pr-12 py-3 bg-slate-700/50 border border-purple-500/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all duration-200"
+                className="w-full pl-12 pr-12 py-3 bg-white dark:bg-slate-700/50 border border-gray-300 dark:border-purple-500/30 rounded-lg text-slate-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition-all duration-200"
                 required
               />
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute right-4 top-3.5 text-purple-400 hover:text-purple-300 transition"
+                className="absolute right-4 top-3.5 text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 transition"
               >
                 {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </button>
@@ -191,13 +191,13 @@ export default function Signup() {
               className="mt-1 rounded border-purple-500/30 w-4 h-4"
               required
             />
-            <span className="text-gray-400">
+            <span className="text-gray-600 dark:text-gray-400">
               I agree to the{" "}
-              <a href="#" className="text-purple-400 hover:text-purple-300 transition">
+              <a href="#" className="text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 transition">
                 Terms of Service
               </a>{" "}
               and{" "}
-              <a href="#" className="text-purple-400 hover:text-purple-300 transition">
+              <a href="#" className="text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 transition">
                 Privacy Policy
               </a>
             </span>
@@ -225,10 +225,10 @@ export default function Signup() {
           {/* Divider */}
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-purple-500/20"></div>
+              <div className="w-full border-t border-gray-300 dark:border-purple-500/20"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-gradient-to-br from-slate-800/50 to-purple-900/30 text-gray-400">
+              <span className="px-2 bg-white dark:bg-gradient-to-br dark:from-slate-800/50 dark:to-purple-900/30 text-gray-600 dark:text-gray-400">
                 Or sign up with
               </span>
             </div>
@@ -238,46 +238,24 @@ export default function Signup() {
           <div className="grid grid-cols-2 gap-3">
             <button
               type="button"
-              className="py-2 px-4 bg-slate-700/50 border border-purple-500/20 rounded-lg text-sm font-medium text-gray-300 hover:bg-slate-700/80 hover:border-purple-500/40 transition-all"
+              className="py-2 px-4 bg-gray-100 dark:bg-slate-700/50 border border-gray-300 dark:border-purple-500/20 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-slate-700/80 hover:border-gray-400 dark:hover:border-purple-500/40 transition-all"
             >
               Google
-            </button>
-            <button
-              type="button"
-              className="py-2 px-4 bg-slate-700/50 border border-purple-500/20 rounded-lg text-sm font-medium text-gray-300 hover:bg-slate-700/80 hover:border-purple-500/40 transition-all"
-            >
-              GitHub
             </button>
           </div>
         </form>
 
         {/* Login Link */}
         <div className="mt-6 text-center">
-          <p className="text-gray-400">
+          <p className="text-gray-600 dark:text-gray-400">
             Already have an account?{" "}
             <button
               onClick={() => navigate("/login")}
-              className="text-purple-400 hover:text-purple-300 font-semibold transition"
+              className="text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 font-semibold transition"
             >
               Log in here
             </button>
           </p>
-        </div>
-
-        {/* Benefits Preview */}
-        <div className="mt-12 space-y-3">
-          <div className="flex items-center gap-3 text-sm">
-            <CheckCircle size={20} className="text-purple-400 flex-shrink-0" />
-            <span className="text-gray-400">No credit card required</span>
-          </div>
-          <div className="flex items-center gap-3 text-sm">
-            <CheckCircle size={20} className="text-purple-400 flex-shrink-0" />
-            <span className="text-gray-400">Free forever plan available</span>
-          </div>
-          <div className="flex items-center gap-3 text-sm">
-            <CheckCircle size={20} className="text-purple-400 flex-shrink-0" />
-            <span className="text-gray-400">Full access to all features</span>
-          </div>
         </div>
       </div>
     </div>
