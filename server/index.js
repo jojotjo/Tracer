@@ -12,7 +12,7 @@ app.use(cors({
 }));
 app.use(express.json());
 
-app.use("/api/auth", require("./routes/authRoutes"));
+app.use("/api/auth", require("./routes/AuthRoutes"));
 app.use("/api/expenses",require("./routes/expenseRoutes"));
 
 mongoose
