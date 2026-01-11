@@ -12,8 +12,8 @@ app.use(cors({
 }));
 app.use(express.json());
 
-app.use("/api/auth", require("./routes/AuthRoutes"));
-app.use("/api/expenses",require("./routes/expenseRoutes"));
+app.use("/auth", require("./routes/AuthRoutes"));
+app.use("/expenses",require("./routes/expenseRoutes"));
 
 mongoose
   .connect(process.env.MONGO_URL)
