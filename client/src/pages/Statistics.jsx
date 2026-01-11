@@ -205,7 +205,7 @@ export default function Statistics() {
 
         {/* Tips */}
         <div className="mt-8 bg-gradient-to-r from-purple-500/10 to-pink-500/10 dark:from-purple-500/20 dark:to-pink-500/20 border border-purple-300 dark:border-purple-500/30 rounded-2xl p-6">
-          <h4 className="text-lg font-semibold text-slate-900 dark:text-white mb-3">💡 Tips to Reduce Spending</h4>
+          <h4 className="text-lg font-semibold text-slate-900 dark:text-white mb-3">Tips to Reduce Spending</h4>
           <ul className="space-y-2 text-gray-700 dark:text-gray-300">
             <li>• Track your highest spending category and look for ways to optimize</li>
             <li>• Review your daily expenses to identify patterns and unnecessary purchases</li>
