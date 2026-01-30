@@ -222,27 +222,9 @@ export default function Signup() {
             )}
           </button>
 
-          {/* Divider */}
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300 dark:border-purple-500/20"></div>
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white dark:bg-gradient-to-br dark:from-slate-800/50 dark:to-purple-900/30 text-gray-600 dark:text-gray-400">
-                Or sign up with
-              </span>
-            </div>
-          </div>
+         
 
-          {/* Social Signup Buttons */}
-          <div className="grid grid-cols-2 gap-3">
-            <button
-              type="button"
-              className="py-2 px-4 bg-gray-100 dark:bg-slate-700/50 border border-gray-300 dark:border-purple-500/20 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-slate-700/80 hover:border-gray-400 dark:hover:border-purple-500/40 transition-all"
-            >
-              Google
-            </button>
-          </div>
+         
         </form>
 
         {/* Login Link */}
